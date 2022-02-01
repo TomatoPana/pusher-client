@@ -5,8 +5,8 @@ const axios = require("axios");
 
 function App() {
   useEffect(() => {
-    const id = 1;
-    const token = "2|AO5zvvnp2WKVn8Zt6I8JlOIrpuVHC3NHDMmpZrN8";
+    const id = 3;
+    const token = "9|bfXLNVJIbefATHnMeLKydaqAkiKiNFlyzZEO9yWj";
 
     window.Pusher = require("pusher-js");
 
@@ -14,15 +14,15 @@ function App() {
       broadcaster: "pusher",
       key: "Dabill",
       cluster: "mt1",
-      forceTLS: false,
-      wsHost: window.location.hostname,
+      forceTLS: true,
+      wsHost: "dabill.io",
       wsPort: 6001,
       // authEndpoint: 'http://localhost:8000/broadcasting/auth',
       authorizer: (channel, options) => ({
         authorize: (socketId, callback) => {
           axios
             .post(
-              "http://localhost:8000/broadcasting/auth",
+              "https://dabill.io/broadcasting/auth",
               {
                 socket_id: socketId,
                 channel_name: channel.name,
@@ -30,6 +30,7 @@ function App() {
               {
                 headers: {
                   Authorization: `Bearer ${token}`,
+                  "dabill-authentication": "$2y$10$RkN.GzXUGmn7axD8dR2MTOiFjcIPDPj1I5dbZ31hTwTYcypxy8B8K",
                 },
               }
             )
@@ -43,12 +44,19 @@ function App() {
       }),
     });
 
-    window.Echo.private(`clients.${id}`).listen(
-      '.client.join',
-      (event) => {
+    window.Echo.private(`Client.${id}`)
+      .listen('.client.table.banned', (event) => {
         console.log(event);
-      }
-    );
+      }).listen('.client.table.transferred', (event) => {
+        console.log(event);
+      }).listen('.client.table.accepted', (event) => {
+        console.log(event);
+      }).listen('.client.table.rejected', (event) => {
+        console.log(event);
+      }).listen('.client.table.join', (event) => {
+        console.log(event);
+      });
+    
   }, []);
 
   return <div className="App" />;
