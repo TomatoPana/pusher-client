@@ -1,5 +1,5 @@
 const id = 4;
-const token = "81|vqoTkB73rGb1pMxX5z1HZz3o4qw1HXzqI3MXfJ6r";
+const token = //TOKEN HERE;
 const socket = new WebSocket("wss://dabill.io/app/Dabill?protocol=7&client=js&version=7.0.3&flash=false");
 
 // Connection opened
